@@ -38,6 +38,14 @@ demo-2d-anatomy/
 │
 ├── templates/                    # Blender Application Templates
 │   ├── Z-Anatomy/                # Full Human Anatomical Atlas workspace (Blender 3.5)
+│   └── Human-Anatomy-Atlas/      # Standalone Human Atlas environment (Blender 3.0)
+│
+├── viewer/                       # Interactive Anatomy 3D Atlas Web Application
+│   ├── src/                      # React Three Fiber, PBR shaders, Zustand store, clinical drawer
+│   ├── public/models/            # 59 calibrated BodyParts3D OBJ meshes across all 5 body regions
+│   ├── public/models_manifest.json # Trilingual metadata (English, Latin, Hindi), volume & bounds
+│   └── package.json              # Web app dependencies & build scripts
+
 │   │   ├── Startup.blend         # Master 3D anatomical scene file (292.6 MB, via Git LFS)
 │   │   ├── __init__.py           # Blender Python add-on (labels, cross-sections, Wikipedia API)
 │   │   ├── Anatomy-shortcuts.py  # Custom Blender shortcut keymap configuration
@@ -138,7 +146,27 @@ To open the full interactive atlas inside Blender:
 4. Select `File > New > Z-Anatomy`.
 5. Enjoy fully parented 3D anatomical navigation, dynamic cross-sections, and bilingual labeling.
 
+### 5. Running the Interactive 3D Web Viewer
+
+To launch the real-time Anatomy 3D Atlas browser application:
+
+```bash
+cd viewer
+npm install
+npm run dev
+```
+
+Then navigate to `http://localhost:5173` in any modern web browser.
+Features include:
+- **Level 1 Body Region Filtering**: All Body, Head, Trunk, Upper Limbs, Lower Limbs
+- **Level 2 Macro System Filtering**: Skeletal, Muscular, Cardiovascular, Nervous, Respiratory, Digestive, Urogenital, Endocrine, Lymphatic
+- **PBR Surgical Lighting & Realistic Textures**: Subsurface scatter simulation, bone translucency, and organ shaders
+- **Clinical Inspection Drawer**: High-detail physiological descriptions, clinical significance, and component breakdown
+- **Trilingual Nomenclature**: English, Latin (*Terminologia Anatomica*), and Hindi (देवनागरी)
+- **Interactive Tools**: Exploded view mode, anatomical layer transparency, isolate/hide controls, and multi-angle camera presets (Front, Back, Left, Right, Top)
+
 ---
+
 
 ## 📜 Licensing & Attributions
 
