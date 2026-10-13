@@ -1,0 +1,28 @@
+{
+  "name": "demo-2d-anatomy",
+  "version": "1.0.0",
+  "description": "Comprehensive Human Anatomy 3D/2D Atlas, Datasets, and Blender Templates",
+  "main": "tools/fma_lookup.py",
+  "scripts": {
+    "lookup": "python tools/fma_lookup.py",
+    "summary": "python tools/fma_lookup.py --summary",
+    "build-catalog": "python tools/catalog_builder.py",
+    "verify": "python tools/verify_integrity.py"
+  },
+  "keywords": [
+    "human-anatomy",
+    "anatomy-3d",
+    "bodyparts3d",
+    "blender",
+    "z-anatomy",
+    "fma",
+    "terminologia-anatomica",
+    "medical-visualization"
+  ],
+  "author": "Sheevum Goel",
+  "license": "CC-BY-SA-4.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sheevu/demo-2d-anatomy.git"
+  }
+}
