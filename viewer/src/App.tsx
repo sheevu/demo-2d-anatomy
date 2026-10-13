@@ -102,6 +102,10 @@ function StatusBar() {
 }
 
 export default function App() {
+  React.useEffect(() => {
+    (window as any).__ANATOMY_STORE__ = useAnatomyStore;
+  }, []);
+
   return (
     <div
       style={{

@@ -34,32 +34,72 @@ function SceneLighting() {
 
 function CameraController() {
   const controlsRef = useRef<OrbitControlsType>(null);
-  const { cameraView, selectedModel } = useAnatomyStore();
+  const { cameraView, selectedModel, bodyRegion } = useAnatomyStore();
 
   useEffect(() => {
     const controls = controlsRef.current;
     if (!controls) return;
 
-    const views: Record<string, [number, number, number]> = {
-      front: [0, 0.2, 2.4],
-      back: [0, 0.2, -2.4],
-      left: [-2.4, 0.2, 0],
-      right: [2.4, 0.2, 0],
-      top: [0, 3.4, 0.001],
-      free: [0, 0.2, 2.4],
+    // Region focal points and camera distance
+    let targetY = 0.05;
+    let camDistance = 2.3;
+
+    if (selectedModel) {
+      let rawZ = 1200;
+      if (selectedModel.bounds_min && selectedModel.bounds_max) {
+        const minZ = parseFloat(selectedModel.bounds_min.split(',')[2] || '1200');
+        const maxZ = parseFloat(selectedModel.bounds_max.split(',')[2] || '1200');
+        rawZ = (minZ + maxZ) * 0.5;
+      }
+      // BodyParts3D mm to scene Y coordinate: (rawZ * 0.001) - 1.0
+      targetY = (rawZ * 0.001) - 1.0;
+      camDistance = 0.65;
+    } else {
+
+      switch (bodyRegion) {
+        case 'Head':
+          targetY = 0.62;
+          camDistance = 0.75;
+          break;
+        case 'Trunk':
+          targetY = 0.2;
+          camDistance = 1.35;
+          break;
+        case 'Upper Limbs':
+          targetY = 0.22;
+          camDistance = 1.4;
+          break;
+        case 'Lower Limbs':
+          targetY = -0.45;
+          camDistance = 1.4;
+          break;
+        default:
+          targetY = 0.05;
+          camDistance = 2.3;
+          break;
+      }
+    }
+
+    const angleViews: Record<string, [number, number, number]> = {
+      front: [0, targetY + 0.05, camDistance],
+      back: [0, targetY + 0.05, -camDistance],
+      left: [-camDistance, targetY + 0.05, 0],
+      right: [camDistance, targetY + 0.05, 0],
+      top: [0, targetY + camDistance * 1.3, 0.001],
+      free: [0, targetY + 0.05, camDistance],
     };
 
-    const targetPos = views[cameraView] || [0, 0.2, 2.4];
+    const targetPos = angleViews[cameraView] || [0, targetY + 0.05, camDistance];
     controls.object.position.set(...targetPos);
-    controls.target.set(0, 0.15, 0);
+    controls.target.set(0, targetY, 0);
     controls.update();
-  }, [cameraView]);
+  }, [cameraView, bodyRegion, selectedModel]);
 
   return (
     <OrbitControls
       ref={controlsRef}
-      target={[0, 0.15, 0]}
-      minDistance={0.5}
+      target={[0, 0.05, 0]}
+      minDistance={0.3}
       maxDistance={4.5}
       enablePan={true}
       enableDamping={true}
